@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lmc.popularmovie.R;
 import com.lmc.popularmovie.utility.MovieDetails;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -53,14 +55,15 @@ public class MovieDetailsAdapter  extends BaseAdapter{
         TextView description = (TextView) view.findViewById(R.id.textView_overview);
         description.setText(entry.overview);
 
-        TextView poster = (TextView) view.findViewById(R.id.textView_poster);
-        description.setText(entry.moviePoster);
+        //http://image.tmdb.org/t/p/w185/
+        ImageView poster = (ImageView) view.findViewById(R.id.imageView_poster);
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+entry.moviePoster).into(poster);
 
         TextView date = (TextView) view.findViewById(R.id.textView_releaseDate);
-        description.setText(entry.releaseDate);
+        date.setText(entry.releaseDate);
 
         TextView rating = (TextView) view.findViewById(R.id.textView_userRating);
-        description.setText(entry.userRating);
+        rating.setText(entry.userRating);
 
 
         return view;

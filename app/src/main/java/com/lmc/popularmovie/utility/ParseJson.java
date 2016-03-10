@@ -14,27 +14,26 @@ import java.util.ArrayList;
  */
 public class ParseJson {
 
-    public ArrayList<MovieDetails> parsejson(InputStream in){
-        ArrayList<MovieDetails> list=new ArrayList<MovieDetails>();
+    public ArrayList<MovieDetails> parsejson(InputStream in) {
+        ArrayList<MovieDetails> list = new ArrayList<MovieDetails>();
 
         try {
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
             try {
                 reader.beginObject();
 
-                while(reader.hasNext()){
-                    String name=reader.nextName();
-                    if(name.equals("results")){
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
+                    if (name.equals("results")) {
                         reader.beginArray();
-                        while(reader.hasNext()){
-                           readMovieDetails(reader,list);
+                        while (reader.hasNext()) {
+                            readMovieDetails(reader, list);
 
                         }
                         reader.endArray();
 
 
-                    }
-                    else{
+                    } else {
                         reader.skipValue();
                     }
                 }
@@ -49,50 +48,48 @@ public class ParseJson {
             e.printStackTrace();
         }
 
-    return list;
+        return list;
     }
 
 
-   static ArrayList<MovieDetails>  readMovieDetails( JsonReader reader,ArrayList<MovieDetails> details){
-try{
-        reader.beginObject();
-        MovieDetails movie= new MovieDetails();
-       while(reader.hasNext()){
+    static ArrayList<MovieDetails> readMovieDetails(JsonReader reader, ArrayList<MovieDetails> details) {
+        try {
+            reader.beginObject();
+            MovieDetails movie = new MovieDetails();
+            while (reader.hasNext()) {
+                try {
+
+                    String name = reader.nextName();
+
+                    if (name.equals("title")) {
+                        movie.title = reader.nextString();
+                    } else if (name.equals("poster_path")) {
+                        movie.moviePoster = reader.nextString();
+                    } else if (name.equals("overview")) {
+                        movie.overview = reader.nextString();
+                    } else if (name.equals("vote_average")) {
+                        movie.userRating = reader.nextString();
+                    } else if (name.equals("release_date")) {
+                        movie.releaseDate = reader.nextString();
+                    } else {
+                        reader.skipValue();
+                    }
+                } catch (IllegalStateException ex) {
+                    Log.e("Lamchith", ex.toString());
+                }
+                //release_date
 
 
-           String name =reader.nextName();
+            }
+            details.add(movie);
+            Log.d("Lamchith", movie.toString());
+            reader.endObject();
 
-           if(name.equals("title")){
-               movie.title=reader.nextString();
-           }
-           else if(name.equals("poster_path")){
-               movie.moviePoster=reader.nextString();
-           }
-           else if(name.equals("overview")){
-               movie.overview=reader.nextString();
-           }
-           else if(name.equals("vote_average")){
-               movie.userRating=reader.nextString();
-           }
-           else if(name.equals("release_date")){
-               movie.releaseDate=reader.nextString();
-           }
-           else{
-               reader.skipValue();
-           }
-           //release_date
+        } catch (IOException io) {
+        }
 
-
-       }
-    details.add(movie);
-    Log.d("Lamchith",movie.toString());
-    reader.endObject();
-
+        return details;
     }
-catch (IOException io){
-}
-
-    return details; }
 
 
 }
