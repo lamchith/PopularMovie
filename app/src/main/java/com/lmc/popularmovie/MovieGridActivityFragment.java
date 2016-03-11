@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
 import com.lmc.popularmovie.ui.helper.GridImageAdapter;
 import com.lmc.popularmovie.utility.MovieApplication;
 import com.lmc.popularmovie.utility.MovieDetails;
 import com.lmc.popularmovie.utility.ParseJson;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +70,7 @@ public class MovieGridActivityFragment extends Fragment {
         Log.i("Lamchith", "Value from prefernce is :" + sort);
         try {
             // keep the movie api key here
-            downloadTask = (DownloadTask) new DownloadTask().execute(new URL("http://api.themoviedb.org/3/discover/movie?sort_by=" + sortBy + "&api_key="));
+            downloadTask = (DownloadTask) new DownloadTask().execute(new URL("http://api.themoviedb.org/3/discover/movie?sort_by=" + sortBy + "&api_key=c1b3f30b9499e9b6dbfabec386d13288"));
         } catch (MalformedURLException ex) {
             Log.e("Lamchith", ex.getMessage());
 
@@ -86,11 +88,13 @@ public class MovieGridActivityFragment extends Fragment {
             URL url = null;
             try {
                 url = urls[0];
-                ;
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                list = parseJson.parsejson(in);
-                Log.i("Lamchith", "got the list" + list.size());
+                if(parseJson.isOnline(MovieApplication.context)) {
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    list = parseJson.parsejson(in);
+                    Log.i("Lamchith", "got the list" + list.size());
+
+                }
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -133,6 +137,8 @@ public class MovieGridActivityFragment extends Fragment {
 
         }
     }
+
+
 
 
     @Override

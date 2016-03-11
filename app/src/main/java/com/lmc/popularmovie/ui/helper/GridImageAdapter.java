@@ -24,11 +24,15 @@ public class GridImageAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
+        if(details==null)
+            return 0;
         return details.size();
     }
 
     @Override
     public Object getItem(int i) {
+        if(details==null)
+            return null;
         return details.get(i);
     }
 
@@ -39,6 +43,8 @@ public class GridImageAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        if(details==null)
+            return null;
         ImageView imageView=null;
         MovieDetails entry = details.get(i);
         if (view == null) {
